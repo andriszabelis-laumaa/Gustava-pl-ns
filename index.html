@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quest Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d0f1a;--panel:#161a2e;--panel2:#1e2340;--line:#2b3160;--text:#e8ebff;--muted:#8a90b8;--green:#39ff88;--gold:#ffc83d;--pink:#ff4fd8;--blue:#4fc3ff;--red:#ff5d6c}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:radial-gradient(circle at 20% 0%,#1d2247 0,var(--bg) 60%) fixed;background-color:var(--bg);color:var(--text);font-family:Rubik,system-ui,sans-serif;min-height:100vh}
+.wrap{max-width:900px;margin:0 auto;padding:16px 16px 100px}
+h2{margin:2px 0 0;font-size:20px;font-weight:800}
+h3{margin:22px 0 10px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.row{display:flex;align-items:center;gap:12px}.between{justify-content:space-between}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);font-weight:800}
+.big{font-size:30px;font-weight:900;color:var(--green)}
+.bar{height:12px;background:var(--panel2);border-radius:99px;overflow:hidden;margin-top:12px;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:99px;transition:width .4s}
+.hint{color:var(--muted);font-size:13px;margin-top:10px}
+.banner{margin-top:12px;padding:10px 12px;border-radius:12px;background:linear-gradient(90deg,#3a1d5c,#123a4a);font-weight:800;color:var(--gold)}
+/* header */
+#hdr{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#1f1640,#10203a);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:14px}
+.avatar{font-size:40px;width:64px;height:64px;display:grid;place-items:center;background:var(--panel2);border-radius:16px;border:2px solid var(--pink);box-shadow:0 0 18px #ff4fd855;flex:none}
+.who{flex:1;min-width:0}.name{font-weight:900;font-size:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank{color:var(--gold);font-size:13px;font-weight:600}
+.xpbar{position:relative;height:18px;background:var(--bg);border-radius:99px;margin-top:6px;overflow:hidden;border:1px solid var(--line)}
+.xpbar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--pink),var(--gold));transition:width .5s}
+.xpbar span{position:relative;display:block;text-align:center;font-size:11px;font-weight:800;line-height:18px}
+.chips{display:flex;flex-direction:column;gap:6px}
+.chip{background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-weight:800;font-size:14px;white-space:nowrap}
+/* quests */
+.quest{width:100%;display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;color:var(--text);font:inherit;text-align:left;cursor:pointer;transition:transform .1s,border-color .2s,background .2s}
+.quest:active{transform:scale(.98)}
+.qicon{font-size:28px;width:46px;height:46px;display:grid;place-items:center;background:var(--panel2);border-radius:12px;flex:none}
+.qbody{flex:1;min-width:0}.qbody b{display:block;font-size:16px}.qbody small{color:var(--muted);font-size:13px}
+.qxp{font-weight:900;color:var(--gold);font-size:14px;white-space:nowrap}
+.check{width:30px;height:30px;border-radius:9px;border:2px solid var(--line);display:grid;place-items:center;flex:none;color:transparent;font-weight:900}
+.quest.done{border-color:var(--green);background:linear-gradient(90deg,#123326,var(--panel))}
+.quest.done .check{background:var(--green);border-color:var(--green);color:#06210f}
+.quest.done b{text-decoration:line-through;opacity:.8}
+.quest.locked{opacity:.5}.quest.locked .check{color:var(--muted)}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+/* month */
+.mnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.mnav button,.btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 14px;font:inherit;font-weight:800;cursor:pointer}
+.btn.primary{background:var(--green);color:#06210f;border-color:var(--green)}
+.btn.danger{background:transparent;color:var(--red);border-color:var(--red)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.gridwrap{overflow-x:auto;border-radius:12px;border:1px solid var(--line);background:var(--panel)}
+table.grid{border-collapse:separate;border-spacing:3px;font-size:11px}
+.grid th{font-weight:600;color:var(--muted);padding:2px;min-width:26px}
+.grid th.we{color:var(--pink)}.grid th.tod{color:var(--green)}
+.grid .sticky{position:sticky;left:0;background:var(--panel);z-index:1;text-align:left;white-space:nowrap;padding-right:8px;font-size:13px;color:var(--text);font-weight:600}
+.cell{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--line);background:var(--bg);color:#06210f;font-weight:900;padding:0;cursor:pointer;font-size:13px}
+.cell.on{background:var(--green);border-color:var(--green)}
+.cell.miss{border-color:#5a2a3a}
+.cell:disabled{opacity:.35;cursor:default}
+.na{background:repeating-linear-gradient(45deg,transparent 0 3px,#ffffff08 3px 6px);border-radius:6px}
+.pct{font-size:10px;text-align:center;color:var(--muted)}
+.stats{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+@media(min-width:640px){.stats{grid-template-columns:1fr 1fr}}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.kpi{background:var(--panel2);border-radius:12px;padding:10px}.kpi b{display:block;font-size:22px;font-weight:900}.kpi small{color:var(--muted);font-size:11px;text-transform:uppercase}
+.donut{--p:0;width:130px;height:130px;border-radius:50%;background:conic-gradient(var(--green) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;margin:14px auto 4px}
+.donut span{width:96px;height:96px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-size:26px;font-weight:900}
+.trow{display:grid;grid-template-columns:1fr 46px 70px 42px;gap:8px;align-items:center;font-size:13px;padding:6px 0;border-bottom:1px solid var(--line)}
+.trow:last-child{border:0}.trow .bar{margin:0;height:8px}.trow .n{text-align:right;color:var(--muted)}.trow .p{text-align:right;font-weight:800}
+.weeks{display:flex;align-items:flex-end;gap:10px;height:120px;padding-top:10px}
+.wk{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;font-size:11px;color:var(--muted)}
+.wk i{width:100%;max-width:44px;background:linear-gradient(0deg,var(--blue),var(--pink));border-radius:6px 6px 2px 2px;min-height:3px}
+/* achievements & shop */
+.ach{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.badge{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;filter:grayscale(1);opacity:.45}
+.badge.got{filter:none;opacity:1;border-color:var(--gold);box-shadow:0 0 16px #ffc83d33}
+.badge .e{font-size:34px}.badge b{display:block;margin-top:4px;font-size:14px}.badge small{color:var(--muted);font-size:12px}
+.reward{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.reward .qicon{font-size:26px}.reward .qbody b{font-size:15px}
+.hist{font-size:13px;color:var(--muted);line-height:1.8}
+label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
+input[type=text]{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;color:var(--text);font:inherit;font-size:16px}
+.avs{display:flex;flex-wrap:wrap;gap:8px}.avs button{font-size:26px;width:48px;height:48px;border-radius:12px;background:var(--panel2);border:2px solid var(--line);cursor:pointer}
+.avs button.sel{border-color:var(--pink)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+/* nav */
+nav{position:fixed;left:0;right:0;bottom:0;background:#0b0d18ee;backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:10}
+nav button{flex:1;max-width:120px;background:none;border:0;color:var(--muted);font:inherit;font-size:11px;font-weight:600;padding:6px 2px;cursor:pointer;border-radius:10px}
+nav button span{display:block;font-size:22px}
+nav button.on{color:var(--green);background:#39ff8814}
+/* fx */
+#toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:30;display:flex;flex-direction:column;gap:8px;width:min(92vw,420px);pointer-events:none}
+.toast{background:var(--panel2);border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-weight:800;box-shadow:0 8px 30px #0008;animation:tin .25s}
+.toast.red{border-color:var(--red)}
+@keyframes tin{from{transform:translateY(-12px);opacity:0}}
+.floatxp{position:fixed;left:50%;top:45%;transform:translateX(-50%);font-size:34px;font-weight:900;color:var(--gold);text-shadow:0 0 20px #ffc83d99;pointer-events:none;z-index:40;animation:fup 1s forwards}
+@keyframes fup{to{transform:translate(-50%,-80px);opacity:0}}
+.conf{position:fixed;top:-10px;width:9px;height:14px;z-index:35;pointer-events:none;animation:fall 1.6s linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="hdr"></div>
+  <main id="main"></main>
+</div>
+<nav id="nav">
+  <button data-tab="today" class="on"><span>⚔️</span>Šodien</button>
+  <button data-tab="month"><span>📅</span>Mēnesis</button>
+  <button data-tab="ach"><span>🏆</span>Trofejas</button>
+  <button data-tab="shop"><span>🪙</span>Veikals</button>
+  <button data-tab="set"><span>⚙️</span>Iestatījumi</button>
+</nav>
+<div id="toasts"></div>
+
+<script>
+/* ========= KONFIGURĀCIJA — šeit var mainīt misijas, XP un balvas =========
+   days: 0=svētdiena, 1=pirmdiena, 2=otrdiena, 3=trešdiena, 4=ceturtdiena, 5=piektdiena, 6=sestdiena
+   bonus:true  — papildus misija (neietekmē "ideālo dienu")
+   unlock:true — atbloķējas tikai tad, kad izpildītas visas obligātās misijas */
+const TASKS = [
+  {id:'parg',    icon:'👕', name:'Pārģērbties pēc skolas',          xp:10, days:[1,2,3,4,5]},
+  {id:'trauki',  icon:'🍽️', name:'Izkrāmēt traukus',                xp:15, days:[0,1,2,3,4,5,6]},
+  {id:'macibas', icon:'📚', name:'Mācības, mājas darbi',            xp:30, days:[0,1,2,3,4,5]},
+  {id:'sports',  icon:'⚽', name:'Sports',                          xp:30, days:[3,4,5],
+     time:{3:'17:00–18:30', 4:'16:30–18:00', 5:'15:00–16:30'}},
+  {id:'istaba',  icon:'🧹', name:'Sakārtot istabu, drēbes skapī',   xp:20, days:[0,1,2,3,4,5,6]},
+  {id:'uzdlv',   icon:'🧩', name:'Uzdevumi.lv',                     xp:10, days:[0,1,2,3,4,5,6], bonus:true},
+  {id:'draugi',  icon:'🤝', name:'Laiks ar draugiem',               xp:0,  days:[0,1,2,3,4,5,6], bonus:true},
+  {id:'brivais', icon:'🎮', name:'Brīvais laiks',                   xp:5,  days:[0,1,2,3,4,5,6], unlock:true},
+];
+const PERFECT_BONUS = 70; // XP par dienu, kurā izpildītas visas obligātās misijas
+const REWARDS = [
+  {id:'g30',   icon:'🎮', name:'+30 min spēļu laika',               cost:200},
+  {id:'snack', icon:'🍫', name:'Mīļākais našķis',                   cost:250},
+  {id:'late',  icon:'🌙', name:'+30 min vēlāk gulēt (brīvdienās)',  cost:400},
+  {id:'movie', icon:'🎬', name:'Filmu vakars — tu izvēlies filmu',  cost:600},
+  {id:'big',   icon:'🏆', name:'Lielā balva (vienojies ar vecākiem)', cost:3000},
+];
+/* ======================================================================== */
+
+const RANKS=['Iesācējs','Skauts','Kadets','Bruņinieks','Varonis','Čempions','Meistars','Leģenda','Mītisks'];
+const AVATARS=['🦸','🥷','🧙','🤖','🐉','🦊','👾','🧑‍🚀','🦁','⚡'];
+const WD=['Sv','P','O','T','C','Pk','S'];
+const WD_LONG=['svētdiena','pirmdiena','otrdiena','trešdiena','ceturtdiena','piektdiena','sestdiena'];
+const WD_LOC=['svētdien','pirmdien','otrdien','trešdien','ceturtdien','piektdien','sestdien'];
+const MONTHS=['janvāris','februāris','marts','aprīlis','maijs','jūnijs','jūlijs','augusts','septembris','oktobris','novembris','decembris'];
+const ACH=[
+  {id:'first',   icon:'🎯', name:'Pirmais solis',     desc:'Izpildi pirmo misiju',                test:s=>s.total>=1},
+  {id:'perfect1',icon:'💎', name:'Ideāla diena',      desc:'Visas obligātās misijas vienā dienā', test:s=>s.perfect>=1},
+  {id:'streak3', icon:'🔥', name:'Uguns sākas',       desc:'3 ideālas dienas pēc kārtas',         test:s=>s.best>=3},
+  {id:'streak7', icon:'⚡', name:'Nedēļas varonis',   desc:'7 ideālas dienas pēc kārtas',         test:s=>s.best>=7},
+  {id:'streak30',icon:'👑', name:'Nepārspējamais',    desc:'30 ideālas dienas pēc kārtas',        test:s=>s.best>=30},
+  {id:'sport10', icon:'🏅', name:'Sporta zvaigzne',   desc:'10 treniņi',                          test:s=>s.c.sports>=10},
+  {id:'dish20',  icon:'🍽️', name:'Trauku meistars',   desc:'20× izkrāmēti trauki',                test:s=>s.c.trauki>=20},
+  {id:'study20', icon:'🧠', name:'Gudrinieks',        desc:'20× izpildīti mājas darbi',           test:s=>s.c.macibas>=20},
+  {id:'room20',  icon:'🧹', name:'Kārtības sargs',    desc:'20× sakārtota istaba',                test:s=>s.c.istaba>=20},
+  {id:'lvl5',    icon:'⭐', name:'5. līmenis',        desc:'Sasniedz 5. līmeni',                  test:s=>s.lvl>=5},
+  {id:'lvl10',   icon:'🌟', name:'10. līmenis',       desc:'Sasniedz 10. līmeni',                 test:s=>s.lvl>=10},
+  {id:'shop1',   icon:'🛒', name:'Pirmais pirkums',   desc:'Iztērē monētas veikalā',              test:s=>s.buys>=1},
+];
+
+/* ---------- dati ---------- */
+const LS='questlog-v1';
+function load(){try{return JSON.parse(localStorage.getItem(LS))}catch(e){return null}}
+function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
+let S=Object.assign({name:'Spēlētājs',avatar:'🦸',done:{},spent:[],ach:[]},load()||{});
+
+/* ---------- palīgi ---------- */
+const pad=n=>String(n).padStart(2,'0');
+const keyOf=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const fromKey=k=>{const[a,b,c]=k.split('-').map(Number);return new Date(a,b-1,c)};
+const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const T=id=>TASKS.find(t=>t.id===id);
+const sched=(t,d)=>t.days.includes(d.getDay());
+const isDone=(t,k)=>!!(S.done[k]&&S.done[k][t.id]);
+const isReq=t=>!t.bonus&&!t.unlock;
+const reqFor=d=>TASKS.filter(t=>isReq(t)&&sched(t,d));
+const perfect=d=>{const k=keyOf(d),r=reqFor(d);return r.length>0&&r.every(t=>isDone(t,k))};
+const need=L=>50*L*(L-1);
+function levelOf(xp){let L=1;while(need(L+1)<=xp)L++;return L}
+const rank=L=>RANKS[Math.min(RANKS.length-1,Math.floor((L-1)/2))];
+
+function totalXP(){let xp=0;for(const k in S.done){for(const id in S.done[k]){const t=T(id);if(t)xp+=t.xp}if(perfect(fromKey(k)))xp+=PERFECT_BONUS}return xp}
+function streak(){const d=today();let n=0;if(!perfect(d))d.setDate(d.getDate()-1);while(perfect(d)){n++;d.setDate(d.getDate()-1)}return n}
+function bestStreak(){let best=0,cur=0,prev=null;for(const k of Object.keys(S.done).sort()){const d=fromKey(k);if(!perfect(d)){cur=0;prev=null;continue}
+  if(prev){const p=new Date(prev);p.setDate(p.getDate()+1);cur=keyOf(p)===k?cur+1:1}else cur=1;best=Math.max(best,cur);prev=d}return best}
+const countDone=id=>Object.values(S.done).filter(o=>o[id]).length;
+const spent=()=>S.spent.reduce((a,b)=>a+b.cost,0);
+function stats(){const xp=totalXP(),c={};TASKS.forEach(t=>c[t.id]=countDone(t.id));
+  return{xp,lvl:levelOf(xp),c,total:Object.values(c).reduce((a,b)=>a+b,0),perfect:Object.keys(S.done).filter(k=>perfect(fromKey(k))).length,best:bestStreak(),buys:S.spent.length,coins:xp-spent()}}
+
+/* ---------- efekti ---------- */
+function toast(msg,cls){const el=document.createElement('div');el.className='toast '+(cls||'');el.textContent=msg;document.getElementById('toasts').appendChild(el);setTimeout(()=>el.remove(),2600)}
+function floatXP(txt){const el=document.createElement('div');el.className='floatxp';el.textContent=txt;document.body.appendChild(el);setTimeout(()=>el.remove(),1000)}
+function confetti(){const cols=['#39ff88','#ffc83d','#ff4fd8','#4fc3ff'];for(let i=0;i<50;i++){const c=document.createElement('i');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=cols[i%4];c.style.animationDelay=Math.random()*.4+'s';c.style.animationDuration=1.2+Math.random()*.8+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),2400)}}
+function checkAch(s){ACH.forEach(a=>{if(!S.ach.includes(a.id)&&a.test(s)){S.ach.push(a.id);save();toast('🏆 Jauna trofeja: '+a.icon+' '+a.name);confetti()}})}
+
+/* ---------- darbības ---------- */
+function toggle(id,k,btn){
+  const t=T(id),d=fromKey(k);if(!t||d>today())return;
+  const was=isDone(t,k);
+  if(!was&&t.unlock&&!perfect(d)){toast('🔒 Vispirms izpildi visas obligātās misijas!','red');if(btn){btn.classList.remove('shake');void btn.offsetWidth;btn.classList.add('shake')}return}
+  const before=stats(),wasPerfect=perfect(d);
+  S.done[k]=S.done[k]||{};
+  if(was)delete S.done[k][id];else S.done[k][id]=true;
+  if(!Object.keys(S.done[k]).length)delete S.done[k];
+  save();
+  const after=stats();
+  if(!was&&t.xp)floatXP('+'+t.xp+' XP');
+  if(!wasPerfect&&perfect(d)){toast('💎 IDEĀLA DIENA! +'+PERFECT_BONUS+' XP bonuss');confetti()}
+  if(after.lvl>before.lvl){toast('⬆️ LEVEL UP! Tagad '+after.lvl+'. līmenis — '+rank(after.lvl));confetti()}
+  checkAch(after);render();
+}
+function buy(id){const r=REWARDS.find(x=>x.id===id),s=stats();if(!r||s.coins<r.cost)return;
+  if(!confirm('Nopirkt "'+r.name+'" par '+r.cost+' 🪙?'))return;
+  S.spent.push({id,cost:r.cost,date:keyOf(today())});save();toast('🛒 Nopirkts: '+r.icon+' '+r.name+' — parādi vecākiem!');checkAch(stats());render()}
+
+/* ---------- skati ---------- */
+let tab='today',view=new Date(today().getFullYear(),today().getMonth(),1);
+
+function renderHeader(s){const L=s.lvl,cur=need(L),nxt=need(L+1),p=Math.round((s.xp-cur)/(nxt-cur)*100);
+  document.getElementById('hdr').innerHTML=`<div class="avatar">${S.avatar}</div>
+  <div class="who"><div class="name">${esc(S.name)}</div><div class="rank">${rank(L)} · ${L}. līmenis</div>
+  <div class="xpbar"><i style="width:${p}%"></i><span>${s.xp-cur} / ${nxt-cur} XP</span></div></div>
+  <div class="chips"><span class="chip" title="Ideālo dienu sērija">🔥 ${streak()}</span><span class="chip" title="Monētas">🪙 ${s.coins}</span></div>`}
+
+function questCard(t,k,d){const done=isDone(t,k),locked=t.unlock&&!perfect(d)&&!done;
+  const sub=t.time&&t.time[d.getDay()]?'🕒 '+t.time[d.getDay()]:t.unlock?(locked?'🔒 Atbloķējas pēc obligātajām misijām':'🔓 Atbloķēts — izbaudi!'):t.bonus?(t.xp?'Bonusa misija':'Brīvprātīgi'):'Obligātā misija';
+  return`<button class="quest ${done?'done':''} ${locked?'locked':''}" data-toggle="${t.id}" data-k="${k}">
+  <span class="qicon">${t.icon}</span><span class="qbody"><b>${esc(t.name)}</b><small>${sub}</small></span>
+  <span class="qxp">${t.xp?'+'+t.xp+' XP':''}</span><span class="check">${locked?'🔒':'✔'}</span></button>`}
+
+function nextSport(){const sp=T('sports');if(!sp)return'';const d=today();for(let i=1;i<=7;i++){const x=new Date(d);x.setDate(d.getDate()+i);if(sched(sp,x))return`Nākamais treniņš: ${WD_LOC[x.getDay()]} ${sp.time&&sp.time[x.getDay()]||''}`}return''}
+
+function renderToday(){const d=today(),k=keyOf(d),req=reqFor(d),dn=req.filter(t=>isDone(t,k)).length,pct=req.length?Math.round(dn/req.length*100):0;
+  const bonus=TASKS.filter(t=>!isReq(t)&&sched(t,d));
+  let h=`<div class="panel"><div class="row between"><div><div class="eyebrow">Šodienas misijas</div><h2>${cap(WD_LONG[d.getDay()])}, ${d.getDate()}. ${MONTHS[d.getMonth()]}</h2></div><div class="big">${dn}/${req.length}</div></div>
+  <div class="bar"><i style="width:${pct}%"></i></div>
+  ${perfect(d)?`<div class="banner">💎 Ideāla diena! +${PERFECT_BONUS} XP bonuss saņemts</div>`:`<div class="hint">Izpildi visas obligātās misijas → +${PERFECT_BONUS} XP bonuss un 🎮 brīvais laiks atbloķējas</div>`}
+  ${sched(T('sports')||{days:[]},d)?'':`<div class="hint">⚽ ${nextSport()}</div>`}</div>
+  <h3>⚔️ Obligātās misijas</h3>${req.map(t=>questCard(t,k,d)).join('')}
+  ${bonus.length?`<h3>✨ Bonusa misijas</h3>${bonus.map(t=>questCard(t,k,d)).join('')}`:''}`;
+  return h}
+
+function renderMonth(){const y=view.getFullYear(),m=view.getMonth(),n=new Date(y,m+1,0).getDate(),t0=today();
+  const days=Array.from({length:n},(_,i)=>new Date(y,m,i+1));
+  let h=`<div class="mnav"><button data-mon="-1">◀</button><h2>${cap(MONTHS[m])} ${y}</h2><button data-mon="1">▶</button></div>
+  <div class="gridwrap"><table class="grid"><thead><tr><th class="sticky">Misija</th>${days.map(d=>`<th class="${d.getDay()%6===0?'we':''} ${+d===+t0?'tod':''}">${WD[d.getDay()]}<br>${d.getDate()}</th>`).join('')}</tr></thead><tbody>`;
+  TASKS.forEach(t=>{h+=`<tr><td class="sticky">${t.icon} ${esc(t.name)}</td>`+days.map(d=>{if(!sched(t,d))return'<td class="na"></td>';const k=keyOf(d),on=isDone(t,k),fut=d>t0;
+    return`<td><button class="cell ${on?'on':''} ${!on&&!fut&&+d!==+t0&&isReq(t)?'miss':''}" data-toggle="${t.id}" data-k="${k}" ${fut?'disabled':''}>${on?'✔':''}</button></td>`}).join('')+'</tr>'});
+  h+=`<tr><td class="sticky" style="color:var(--muted);font-size:11px">Dienas %</td>`+days.map(d=>{if(d>t0)return'<td></td>';const r=reqFor(d),k=keyOf(d),p=r.length?Math.round(r.filter(t=>isDone(t,k)).length/r.length*100):0;return`<td class="pct" style="color:${p===100?'var(--green)':'var(--muted)'}">${p}</td>`}).join('')+'</tr></tbody></table></div>';
+  // statistika
+  let goalAll=0,goalSoFar=0,doneAll=0;const rows=TASKS.map(t=>{const g=days.filter(d=>sched(t,d)),gs=g.filter(d=>d<=t0),a=g.filter(d=>isDone(t,keyOf(d))).length;
+    goalAll+=g.length;goalSoFar+=gs.length;doneAll+=a;const p=gs.length?Math.round(a/gs.length*100):0;
+    return`<div class="trow"><span>${t.icon} ${esc(t.name)}</span><span class="n">${a}/${g.length}</span><div class="bar"><i style="width:${p}%"></i></div><span class="p">${p}%</span></div>`}).join('');
+  const op=goalSoFar?Math.round(doneAll/goalSoFar*100):0;
+  const weeks=[];days.forEach((d,i)=>{if(i===0||d.getDay()===1)weeks.push([]);weeks[weeks.length-1].push(d)});
+  const wk=weeks.map((w,i)=>{let g=0,a=0;w.filter(d=>d<=t0).forEach(d=>{const r=reqFor(d);g+=r.length;a+=r.filter(t=>isDone(t,keyOf(d))).length});const p=g?Math.round(a/g*100):0;return`<div class="wk"><b style="color:var(--text)">${g?p+'%':''}</b><i style="height:${p}%"></i>${i+1}. ned.</div>`}).join('');
+  h+=`<div class="stats"><div class="panel"><div class="eyebrow">Kopējā statistika</div><div class="donut" style="--p:${op}"><span>${op}%</span></div>
+  <div class="kpis"><div class="kpi"><b>${goalAll}</b><small>Mērķis</small></div><div class="kpi"><b style="color:var(--green)">${doneAll}</b><small>Izpildīts</small></div><div class="kpi"><b style="color:var(--pink)">${goalAll-doneAll}</b><small>Atlicis</small></div></div></div>
+  <div class="panel"><div class="eyebrow">Nedēļu progress</div><div class="weeks">${wk}</div></div></div>
+  <div class="panel"><div class="eyebrow">Misiju analīze</div>${rows}</div>
+  <div class="hint">Aizmirsi atzīmēt? Pagājušās dienas var atzīmēt šeit tabulā.</div>`;
+  return h}
+
+function renderAch(s){return`<div class="panel"><div class="kpis"><div class="kpi"><b>${s.xp}</b><small>XP kopā</small></div><div class="kpi"><b>${s.perfect}</b><small>Ideālas dienas</small></div><div class="kpi"><b>${s.best}</b><small>Labākā sērija</small></div></div></div>
+  <h3>🏆 Trofejas ${S.ach.length}/${ACH.length}</h3><div class="ach">${ACH.map(a=>`<div class="badge ${S.ach.includes(a.id)?'got':''}"><div class="e">${a.icon}</div><b>${a.name}</b><small>${a.desc}</small></div>`).join('')}</div>
+  <h3>📊 Misijas izpildītas</h3><div class="panel">${TASKS.map(t=>`<div class="trow" style="grid-template-columns:1fr auto"><span>${t.icon} ${esc(t.name)}</span><span class="p">${s.c[t.id]}×</span></div>`).join('')}</div>`}
+
+function renderShop(s){return`<div class="panel row between"><div><div class="eyebrow">Tavs maciņš</div><h2>🪙 ${s.coins} monētas</h2></div></div>
+  <div class="hint" style="margin:-4px 0 14px">Katrs nopelnītais XP = 1 monēta. Iztērē tās balvām!</div>
+  ${REWARDS.map(r=>`<div class="reward"><span class="qicon">${r.icon}</span><span class="qbody"><b>${esc(r.name)}</b><small>${r.cost} 🪙</small></span><button class="btn primary" data-buy="${r.id}" ${s.coins<r.cost?'disabled':''}>Pirkt</button></div>`).join('')}
+  ${S.spent.length?`<h3>🧾 Pirkumu vēsture</h3><div class="panel hist">${S.spent.slice().reverse().slice(0,15).map(p=>{const r=REWARDS.find(x=>x.id===p.id);return`${p.date} — ${r?r.icon+' '+esc(r.name):p.id} (−${p.cost} 🪙)`}).join('<br>')}</div>`:''}`}
+
+function renderSet(){return`<div class="panel"><div class="eyebrow">Spēlētājs</div>
+  <label>Vārds</label><input type="text" id="nm" maxlength="24" value="${esc(S.name)}">
+  <label>Avatars</label><div class="avs">${AVATARS.map(a=>`<button data-av="${a}" class="${a===S.avatar?'sel':''}">${a}</button>`).join('')}</div></div>
+  <div class="panel"><div class="eyebrow">Dati</div><div class="hint">Progress glabājas šajā pārlūkā. Saglabā rezerves kopiju, ja maini ierīci.</div>
+  <div class="btns"><button class="btn" id="exp">⬇️ Eksportēt</button><button class="btn" id="imp">⬆️ Importēt</button><button class="btn danger" id="rst">🗑️ Sākt no jauna</button></div>
+  <input type="file" id="file" accept="application/json" hidden></div>`}
+
+function render(){const s=stats();renderHeader(s);const main=document.getElementById('main');
+  main.innerHTML=tab==='today'?renderToday():tab==='month'?renderMonth():tab==='ach'?renderAch(s):tab==='shop'?renderShop(s):renderSet();
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab))}
+
+/* ---------- notikumi ---------- */
+document.addEventListener('click',e=>{const el=e.target.closest('[data-toggle],[data-tab],[data-mon],[data-buy],[data-av],#exp,#imp,#rst');if(!el)return;
+  if(el.dataset.toggle)toggle(el.dataset.toggle,el.dataset.k,el);
+  else if(el.dataset.tab){tab=el.dataset.tab;render();scrollTo(0,0)}
+  else if(el.dataset.mon){view=new Date(view.getFullYear(),view.getMonth()+ +el.dataset.mon,1);render()}
+  else if(el.dataset.buy)buy(el.dataset.buy);
+  else if(el.dataset.av){S.avatar=el.dataset.av;save();render()}
+  else if(el.id==='exp'){const b=new Blob([JSON.stringify(S,null,1)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='questlog-'+keyOf(today())+'.json';a.click()}
+  else if(el.id==='imp')document.getElementById('file').click();
+  else if(el.id==='rst'){if(confirm('Tiešām dzēst visu progresu?')){S={name:S.name,avatar:S.avatar,done:{},spent:[],ach:[]};save();render()}}});
+document.addEventListener('change',e=>{
+  if(e.target.id==='nm'){S.name=e.target.value.trim()||'Spēlētājs';save();render()}
+  if(e.target.id==='file'){const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.done)throw 0;S=Object.assign({name:'Spēlētājs',avatar:'🦸',done:{},spent:[],ach:[]},d);save();render();toast('✅ Dati ielādēti')}catch(x){toast('❌ Nederīgs fails','red')}})}});
+// jauna diena pusnaktī
+let lastDay=keyOf(today());setInterval(()=>{if(keyOf(today())!==lastDay){lastDay=keyOf(today());render()}},60000);
+render();
+</script>
+</body>
+</html>
