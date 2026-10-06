@@ -21,6 +21,7 @@ h3{margin:22px 0 10px;font-size:13px;letter-spacing:.12em;text-transform:upperca
 .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:99px;transition:width .4s}
 .hint{color:var(--muted);font-size:13px;margin-top:10px}
 .banner{margin-top:12px;padding:10px 12px;border-radius:12px;background:linear-gradient(90deg,#3a1d5c,#123a4a);font-weight:800;color:var(--gold)}
+.banner.learn{background:linear-gradient(90deg,#0f2f4a,#1d2a5c);color:var(--blue)}
 /* header */
 #hdr{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#1f1640,#10203a);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:14px}
 .avatar{font-size:40px;width:64px;height:64px;display:grid;place-items:center;background:var(--panel2);border-radius:16px;border:2px solid var(--pink);box-shadow:0 0 18px #ff4fd855;flex:none}
@@ -30,7 +31,22 @@ h3{margin:22px 0 10px;font-size:13px;letter-spacing:.12em;text-transform:upperca
 .xpbar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--pink),var(--gold));transition:width .5s}
 .xpbar span{position:relative;display:block;text-align:center;font-size:11px;font-weight:800;line-height:18px}
 .chips{display:flex;flex-direction:column;gap:6px}
-.chip{background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-weight:800;font-size:14px;white-space:nowrap}
+.chip{background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-weight:800;font-size:14px;white-space:nowrap;color:var(--text);font-family:inherit}
+button.chip{cursor:pointer}
+.chip.on{border-color:var(--gold);color:var(--gold)}
+/* parent */
+.parentbar{display:flex;justify-content:space-between;align-items:center;gap:10px;background:linear-gradient(90deg,#4a2a00,#2a1a40);border:1px solid var(--gold);border-radius:14px;padding:10px 14px;margin-bottom:14px;font-weight:800;color:var(--gold)}
+.pitem{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.pitem:last-child{border:0}.pitem .qbody small{display:block}
+.sq{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--text);font-size:18px;cursor:pointer;flex:none}
+.sq.ok{background:var(--green);color:#06210f;border-color:var(--green)}.sq.no{color:var(--red);border-color:var(--red)}
+.pen{color:var(--red);font-weight:800;font-size:14px;margin-top:8px}
+.info{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.info.now{border:1px solid var(--blue);box-shadow:0 0 16px #4fc3ff33}
+/* modal */
+.modal{position:fixed;inset:0;background:#000a;display:grid;place-items:center;z-index:50;padding:16px}
+.modal .panel{width:min(100%,360px);margin:0}
+.modal input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;color:var(--text);font:inherit;font-size:24px;letter-spacing:.4em;text-align:center}
 /* quests */
 .quest{width:100%;display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;color:var(--text);font:inherit;text-align:left;cursor:pointer;transition:transform .1s,border-color .2s,background .2s}
 .quest:active{transform:scale(.98)}
@@ -41,24 +57,38 @@ h3{margin:22px 0 10px;font-size:13px;letter-spacing:.12em;text-transform:upperca
 .quest.done{border-color:var(--green);background:linear-gradient(90deg,#123326,var(--panel))}
 .quest.done .check{background:var(--green);border-color:var(--green);color:#06210f}
 .quest.done b{text-decoration:line-through;opacity:.8}
+.quest.pending{border-color:var(--gold);background:linear-gradient(90deg,#3a3010,var(--panel))}
+.quest.pending .check{border-color:var(--gold);color:var(--gold);font-size:15px}
 .quest.locked{opacity:.5}.quest.locked .check{color:var(--muted)}
+.checks{display:flex;gap:8px;flex:none}
+.cbox{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--muted);font-weight:600}
+.pbtn{width:34px;height:34px;border-radius:10px;border:2px dashed var(--gold);background:transparent;color:transparent;font:inherit;font-weight:900;font-size:16px;cursor:pointer;padding:0}
+.pbtn.on{background:var(--gold);border:2px solid var(--gold);color:#2a1d00}
+.pbtn.red{border-color:var(--red)}.pbtn.red.on{background:var(--red);border-color:var(--red);color:#fff}
+.pbtn.none{border:2px solid transparent;cursor:default;color:var(--muted)}
+.check.me{width:34px;height:34px;border-radius:10px}
+.quest.pending .check.me{background:var(--gold);border-color:var(--gold);color:#2a1d00;font-size:16px}
+.colhead{display:flex;justify-content:space-between;align-items:flex-end}
+.info.bad{border:1px solid var(--red);background:linear-gradient(90deg,#3a1018,var(--panel))}
 .shake{animation:shake .35s}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 /* month */
 .mnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .mnav button,.btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:8px 14px;font:inherit;font-weight:800;cursor:pointer}
 .btn.primary{background:var(--green);color:#06210f;border-color:var(--green)}
+.btn.gold{background:var(--gold);color:#2a1d00;border-color:var(--gold)}
 .btn.danger{background:transparent;color:var(--red);border-color:var(--red)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .gridwrap{overflow-x:auto;border-radius:12px;border:1px solid var(--line);background:var(--panel)}
 table.grid{border-collapse:separate;border-spacing:3px;font-size:11px}
 .grid th{font-weight:600;color:var(--muted);padding:2px;min-width:26px}
-.grid th.we{color:var(--pink)}.grid th.tod{color:var(--green)}
+.grid th.we{color:var(--pink)}.grid th.learn{color:var(--blue)}.grid th.tod{color:var(--green)}
 .grid .sticky{position:sticky;left:0;background:var(--panel);z-index:1;text-align:left;white-space:nowrap;padding-right:8px;font-size:13px;color:var(--text);font-weight:600}
 .cell{width:26px;height:26px;border-radius:6px;border:1.5px solid var(--line);background:var(--bg);color:#06210f;font-weight:900;padding:0;cursor:pointer;font-size:13px}
 .cell.on{background:var(--green);border-color:var(--green)}
+.cell.pend{background:#3a3010;border-color:var(--gold);color:var(--gold);font-size:11px}
 .cell.miss{border-color:#5a2a3a}
-.cell:disabled{opacity:.35;cursor:default}
+.cell:disabled{opacity:.4;cursor:default}
 .na{background:repeating-linear-gradient(45deg,transparent 0 3px,#ffffff08 3px 6px);border-radius:6px}
 .pct{font-size:10px;text-align:center;color:var(--muted)}
 .stats{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
@@ -91,11 +121,12 @@ nav button{flex:1;max-width:120px;background:none;border:0;color:var(--muted);fo
 nav button span{display:block;font-size:22px}
 nav button.on{color:var(--green);background:#39ff8814}
 /* fx */
-#toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:30;display:flex;flex-direction:column;gap:8px;width:min(92vw,420px);pointer-events:none}
+#toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;gap:8px;width:min(92vw,420px);pointer-events:none}
 .toast{background:var(--panel2);border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-weight:800;box-shadow:0 8px 30px #0008;animation:tin .25s}
 .toast.red{border-color:var(--red)}
 @keyframes tin{from{transform:translateY(-12px);opacity:0}}
 .floatxp{position:fixed;left:50%;top:45%;transform:translateX(-50%);font-size:34px;font-weight:900;color:var(--gold);text-shadow:0 0 20px #ffc83d99;pointer-events:none;z-index:40;animation:fup 1s forwards}
+.floatxp.neg{color:var(--red);text-shadow:0 0 20px #ff5d6c99}
 @keyframes fup{to{transform:translate(-50%,-80px);opacity:0}}
 .conf{position:fixed;top:-10px;width:9px;height:14px;z-index:35;pointer-events:none;animation:fall 1.6s linear forwards}
 @keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
@@ -103,6 +134,7 @@ nav button.on{color:var(--green);background:#39ff8814}
 </head>
 <body>
 <div class="wrap">
+  <div id="pbar"></div>
   <div id="hdr"></div>
   <main id="main"></main>
 </div>
@@ -114,30 +146,41 @@ nav button.on{color:var(--green);background:#39ff8814}
   <button data-tab="set"><span>⚙️</span>Iestatījumi</button>
 </nav>
 <div id="toasts"></div>
+<div id="modal"></div>
 
 <script>
 /* ========= KONFIGURĀCIJA — šeit var mainīt misijas, XP un balvas =========
    days: 0=svētdiena, 1=pirmdiena, 2=otrdiena, 3=trešdiena, 4=ceturtdiena, 5=piektdiena, 6=sestdiena
-   bonus:true  — papildus misija (neietekmē "ideālo dienu")
-   unlock:true — atbloķējas tikai tad, kad izpildītas visas obligātās misijas */
+   bonus:true    — bonusa misija (neietekmē "ideālo dienu")
+   unlock:true   — atbloķējas, kad visas obligātās misijas ir atzīmētas
+   approve:false — bērns atzīmē pats, vecāku apstiprinājums nav vajadzīgs
+                   (pēc noklusējuma visas misijas apstiprina vecāki) */
 const TASKS = [
   {id:'parg',    icon:'👕', name:'Pārģērbties pēc skolas',          xp:10, days:[1,2,3,4,5]},
   {id:'trauki',  icon:'🍽️', name:'Izkrāmēt traukus',                xp:15, days:[0,1,2,3,4,5,6]},
-  {id:'macibas', icon:'📚', name:'Mācības, mājas darbi',            xp:30, days:[0,1,2,3,4,5]},
+  {id:'macibas', icon:'📚', name:'Mācības, mājas darbi (1–2 h)',    xp:30, days:[0,1,2,3,4,5,6]},
   {id:'sports',  icon:'⚽', name:'Sports',                          xp:30, days:[3,4,5],
      time:{3:'17:00–18:30', 4:'16:30–18:00', 5:'15:00–16:30'}},
   {id:'istaba',  icon:'🧹', name:'Sakārtot istabu, drēbes skapī',   xp:20, days:[0,1,2,3,4,5,6]},
   {id:'uzdlv',   icon:'🧩', name:'Uzdevumi.lv',                     xp:10, days:[0,1,2,3,4,5,6], bonus:true},
-  {id:'draugi',  icon:'🤝', name:'Laiks ar draugiem',               xp:0,  days:[0,1,2,3,4,5,6], bonus:true},
-  {id:'brivais', icon:'🎮', name:'Brīvais laiks',                   xp:5,  days:[0,1,2,3,4,5,6], unlock:true},
+  {id:'draugi',  icon:'🤝', name:'Laiks ar draugiem',               xp:0,  days:[0,1,2,3,4,5,6], bonus:true, approve:false},
+  {id:'brivais', icon:'🎮', name:'Brīvais laiks',                   xp:5,  days:[0,1,2,3,4,5,6], unlock:true, approve:false},
 ];
-const PERFECT_BONUS = 70; // XP par dienu, kurā izpildītas visas obligātās misijas
+const PERFECT_BONUS = 70;          // XP par dienu, kurā visas obligātās misijas apstiprinātas
+const LEARN_DAY = 6;               // sestdiena — mācīšanās diena
+const QUIET = {from:'21:00', to:'22:00'};
+const PENALTY_REASONS = [            // sodi (XP, ko atņem)
+  {id:'quiet',  icon:'🤫', name:'Klusais laiks netika ievērots', xp:20},
+  {id:'behave', icon:'⚠️', name:'Nepieņemama uzvedība',          xp:20},
+];
+const QUIET_XP = PENALTY_REASONS.find(r=>r.id==='quiet').xp;
+const PARENT_MINUTES = 10;         // cik ilgi vecāku režīms paliek atvērts
 const REWARDS = [
-  {id:'g30',   icon:'🎮', name:'+30 min spēļu laika',               cost:200},
-  {id:'snack', icon:'🍫', name:'Mīļākais našķis',                   cost:250},
-  {id:'late',  icon:'🌙', name:'+30 min vēlāk gulēt (brīvdienās)',  cost:400},
-  {id:'movie', icon:'🎬', name:'Filmu vakars — tu izvēlies filmu',  cost:600},
-  {id:'big',   icon:'🏆', name:'Lielā balva (vienojies ar vecākiem)', cost:3000},
+  {id:'g30',   icon:'🎮', name:'+30 min spēļu laika',                cost:400},
+  {id:'snack', icon:'🍫', name:'Mīļākais našķis',                    cost:250},
+  {id:'late',  icon:'🌙', name:'+30 min vēlāk gulēt (brīvdienās)',   cost:400},
+  {id:'movie', icon:'🎬', name:'Filmu vakars — tu izvēlies filmu',   cost:800},
+  {id:'big',   icon:'🏆', name:'Lielā balva (vienojies ar vecākiem)', cost:3500},
 ];
 /* ======================================================================== */
 
@@ -148,7 +191,7 @@ const WD_LONG=['svētdiena','pirmdiena','otrdiena','trešdiena','ceturtdiena','p
 const WD_LOC=['svētdien','pirmdien','otrdien','trešdien','ceturtdien','piektdien','sestdien'];
 const MONTHS=['janvāris','februāris','marts','aprīlis','maijs','jūnijs','jūlijs','augusts','septembris','oktobris','novembris','decembris'];
 const ACH=[
-  {id:'first',   icon:'🎯', name:'Pirmais solis',     desc:'Izpildi pirmo misiju',                test:s=>s.total>=1},
+  {id:'first',   icon:'🎯', name:'Pirmais solis',     desc:'Pirmā apstiprinātā misija',           test:s=>s.total>=1},
   {id:'perfect1',icon:'💎', name:'Ideāla diena',      desc:'Visas obligātās misijas vienā dienā', test:s=>s.perfect>=1},
   {id:'streak3', icon:'🔥', name:'Uguns sākas',       desc:'3 ideālas dienas pēc kārtas',         test:s=>s.best>=3},
   {id:'streak7', icon:'⚡', name:'Nedēļas varonis',   desc:'7 ideālas dienas pēc kārtas',         test:s=>s.best>=7},
@@ -157,6 +200,7 @@ const ACH=[
   {id:'dish20',  icon:'🍽️', name:'Trauku meistars',   desc:'20× izkrāmēti trauki',                test:s=>s.c.trauki>=20},
   {id:'study20', icon:'🧠', name:'Gudrinieks',        desc:'20× izpildīti mājas darbi',           test:s=>s.c.macibas>=20},
   {id:'room20',  icon:'🧹', name:'Kārtības sargs',    desc:'20× sakārtota istaba',                test:s=>s.c.istaba>=20},
+  {id:'uzd20',   icon:'🧩', name:'Uzdevumu lauzējs',  desc:'20× Uzdevumi.lv',                     test:s=>s.c.uzdlv>=20},
   {id:'lvl5',    icon:'⭐', name:'5. līmenis',        desc:'Sasniedz 5. līmeni',                  test:s=>s.lvl>=5},
   {id:'lvl10',   icon:'🌟', name:'10. līmenis',       desc:'Sasniedz 10. līmeni',                 test:s=>s.lvl>=10},
   {id:'shop1',   icon:'🛒', name:'Pirmais pirkums',   desc:'Iztērē monētas veikalā',              test:s=>s.buys>=1},
@@ -164,58 +208,123 @@ const ACH=[
 
 /* ---------- dati ---------- */
 const LS='questlog-v1';
+const BLANK=()=>({name:'Spēlētājs',avatar:'🦸',done:{},spent:[],ach:[],pen:[],pinHash:null});
 function load(){try{return JSON.parse(localStorage.getItem(LS))}catch(e){return null}}
 function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
-let S=Object.assign({name:'Spēlētājs',avatar:'🦸',done:{},spent:[],ach:[]},load()||{});
+let S=Object.assign(BLANK(),load()||{});
 
 /* ---------- palīgi ---------- */
 const pad=n=>String(n).padStart(2,'0');
 const keyOf=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const fromKey=k=>{const[a,b,c]=k.split('-').map(Number);return new Date(a,b-1,c)};
 const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const fmtDate=k=>{const d=fromKey(k);return d.getDate()+'. '+MONTHS[d.getMonth()]};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const T=id=>TASKS.find(t=>t.id===id);
 const sched=(t,d)=>t.days.includes(d.getDay());
-const isDone=(t,k)=>!!(S.done[k]&&S.done[k][t.id]);
+const stOf=(t,k)=>S.done[k]&&S.done[k][t.id];          // true = apstiprināts, 'p' = gaida
+const isDone=(t,k)=>stOf(t,k)===true;
+const isPend=(t,k)=>stOf(t,k)==='p';
+const needsApproval=t=>t.approve!==false;
 const isReq=t=>!t.bonus&&!t.unlock;
 const reqFor=d=>TASKS.filter(t=>isReq(t)&&sched(t,d));
 const perfect=d=>{const k=keyOf(d),r=reqFor(d);return r.length>0&&r.every(t=>isDone(t,k))};
+const submitted=d=>{const k=keyOf(d),r=reqFor(d);return r.length>0&&r.every(t=>stOf(t,k))};
 const need=L=>50*L*(L-1);
 function levelOf(xp){let L=1;while(need(L+1)<=xp)L++;return L}
 const rank=L=>RANKS[Math.min(RANKS.length-1,Math.floor((L-1)/2))];
+const toMin=s=>{const[h,m]=s.split(':').map(Number);return h*60+m};
+const quietNow=()=>{const n=new Date(),m=n.getHours()*60+n.getMinutes();return m>=toMin(QUIET.from)&&m<toMin(QUIET.to)};
+function hash(s){let x=5381;for(const c of 'questlog:'+s)x=((x<<5)+x+c.charCodeAt(0))|0;return String(x)}
 
-function totalXP(){let xp=0;for(const k in S.done){for(const id in S.done[k]){const t=T(id);if(t)xp+=t.xp}if(perfect(fromKey(k)))xp+=PERFECT_BONUS}return xp}
+function totalXP(){let xp=0;for(const k in S.done){for(const id in S.done[k]){const t=T(id);if(t&&S.done[k][id]===true)xp+=t.xp}if(perfect(fromKey(k)))xp+=PERFECT_BONUS}
+  xp+=S.pen.reduce((a,p)=>a+p.xp,0);return Math.max(0,xp)}
 function streak(){const d=today();let n=0;if(!perfect(d))d.setDate(d.getDate()-1);while(perfect(d)){n++;d.setDate(d.getDate()-1)}return n}
 function bestStreak(){let best=0,cur=0,prev=null;for(const k of Object.keys(S.done).sort()){const d=fromKey(k);if(!perfect(d)){cur=0;prev=null;continue}
   if(prev){const p=new Date(prev);p.setDate(p.getDate()+1);cur=keyOf(p)===k?cur+1:1}else cur=1;best=Math.max(best,cur);prev=d}return best}
-const countDone=id=>Object.values(S.done).filter(o=>o[id]).length;
+const countDone=id=>Object.values(S.done).filter(o=>o[id]===true).length;
 const spent=()=>S.spent.reduce((a,b)=>a+b.cost,0);
+function pendingList(){const out=[];Object.keys(S.done).sort().forEach(k=>{for(const id in S.done[k])if(S.done[k][id]==='p'&&T(id))out.push({k,id})});return out}
 function stats(){const xp=totalXP(),c={};TASKS.forEach(t=>c[t.id]=countDone(t.id));
-  return{xp,lvl:levelOf(xp),c,total:Object.values(c).reduce((a,b)=>a+b,0),perfect:Object.keys(S.done).filter(k=>perfect(fromKey(k))).length,best:bestStreak(),buys:S.spent.length,coins:xp-spent()}}
+  return{xp,lvl:levelOf(xp),c,total:Object.values(c).reduce((a,b)=>a+b,0),perfect:Object.keys(S.done).filter(k=>perfect(fromKey(k))).length,best:bestStreak(),buys:S.spent.length,coins:xp-spent(),pend:pendingList().length}}
+
+/* ---------- vecāku režīms ---------- */
+let parentUntil=0;
+const isParent=()=>Date.now()<parentUntil;
+const touchParent=()=>{if(isParent())parentUntil=Date.now()+PARENT_MINUTES*60000};
+function pinModal(mode){
+  const set=mode==='set';
+  document.getElementById('modal').innerHTML=`<div class="modal" data-close="1"><div class="panel">
+    <div class="eyebrow">👨‍👩‍👦 Vecāku režīms</div><h2>${set?'Iestati PIN kodu':'Ievadi PIN kodu'}</h2>
+    ${set?'<div class="hint">4–6 cipari. Neatklāj to bērnam 😉</div>':''}
+    <label>PIN</label><input id="pin" type="password" inputmode="numeric" maxlength="6" autocomplete="off">
+    <div class="btns" style="justify-content:flex-end;margin-top:14px"><button class="btn" data-close="1">Atcelt</button><button class="btn gold" id="pinok" data-mode="${mode}">${set?'Saglabāt':'Atvērt'}</button></div>
+  </div></div>`;
+  setTimeout(()=>{const i=document.getElementById('pin');if(i)i.focus()},50)}
+let pendingAct=null;
+const closeModal=()=>{document.getElementById('modal').innerHTML='';pendingAct=null};
+function openParent(msg){const a=pendingAct;closeModal();parentUntil=Date.now()+PARENT_MINUTES*60000;toast(msg);if(a)a();else render()}
+// izpilda darbību uzreiz vecāku režīmā, citādi vispirms prasa PIN
+function requireParent(action){if(isParent()){touchParent();action();return}pinModal(S.pinHash?'enter':'set');pendingAct=action}
+function submitPin(mode){const v=(document.getElementById('pin').value||'').trim();
+  if(mode==='set'){if(!/^\d{4,6}$/.test(v)){toast('PIN jābūt 4–6 cipariem','red');return}S.pinHash=hash(v);save();openParent('🔐 PIN saglabāts — vecāku režīms atvērts');return}
+  if(hash(v)===S.pinHash)openParent('🔓 Vecāku režīms atvērts');
+  else{toast('❌ Nepareizs PIN','red');const i=document.getElementById('pin');i.value='';i.classList.remove('shake');void i.offsetWidth;i.classList.add('shake')}}
+function parentButton(){if(isParent()){parentUntil=0;toast('🔒 Vecāku režīms aizvērts');render()}else pinModal(S.pinHash?'enter':'set')}
 
 /* ---------- efekti ---------- */
-function toast(msg,cls){const el=document.createElement('div');el.className='toast '+(cls||'');el.textContent=msg;document.getElementById('toasts').appendChild(el);setTimeout(()=>el.remove(),2600)}
-function floatXP(txt){const el=document.createElement('div');el.className='floatxp';el.textContent=txt;document.body.appendChild(el);setTimeout(()=>el.remove(),1000)}
+function toast(msg,cls){const el=document.createElement('div');el.className='toast '+(cls||'');el.textContent=msg;document.getElementById('toasts').appendChild(el);setTimeout(()=>el.remove(),2800)}
+function floatXP(txt,neg){const el=document.createElement('div');el.className='floatxp'+(neg?' neg':'');el.textContent=txt;document.body.appendChild(el);setTimeout(()=>el.remove(),1000)}
 function confetti(){const cols=['#39ff88','#ffc83d','#ff4fd8','#4fc3ff'];for(let i=0;i<50;i++){const c=document.createElement('i');c.className='conf';c.style.left=Math.random()*100+'vw';c.style.background=cols[i%4];c.style.animationDelay=Math.random()*.4+'s';c.style.animationDuration=1.2+Math.random()*.8+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),2400)}}
+function shake(el){if(!el)return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
 function checkAch(s){ACH.forEach(a=>{if(!S.ach.includes(a.id)&&a.test(s)){S.ach.push(a.id);save();toast('🏆 Jauna trofeja: '+a.icon+' '+a.name);confetti()}})}
 
 /* ---------- darbības ---------- */
-function toggle(id,k,btn){
-  const t=T(id),d=fromKey(k);if(!t||d>today())return;
-  const was=isDone(t,k);
-  if(!was&&t.unlock&&!perfect(d)){toast('🔒 Vispirms izpildi visas obligātās misijas!','red');if(btn){btn.classList.remove('shake');void btn.offsetWidth;btn.classList.add('shake')}return}
-  const before=stats(),wasPerfect=perfect(d);
-  S.done[k]=S.done[k]||{};
-  if(was)delete S.done[k][id];else S.done[k][id]=true;
-  if(!Object.keys(S.done[k]).length)delete S.done[k];
-  save();
+// izmaina datus un parāda ideālās dienas / līmeņa / trofeju paziņojumus
+function apply(keys,fn){const before=stats(),was={};keys.forEach(k=>was[k]=perfect(fromKey(k)));
+  fn();keys.forEach(k=>{if(S.done[k]&&!Object.keys(S.done[k]).length)delete S.done[k]});save();
   const after=stats();
-  if(!was&&t.xp)floatXP('+'+t.xp+' XP');
-  if(!wasPerfect&&perfect(d)){toast('💎 IDEĀLA DIENA! +'+PERFECT_BONUS+' XP bonuss');confetti()}
+  keys.forEach(k=>{if(!was[k]&&perfect(fromKey(k))){toast('💎 IDEĀLA DIENA ('+fmtDate(k)+')! +'+PERFECT_BONUS+' XP bonuss');confetti()}});
   if(after.lvl>before.lvl){toast('⬆️ LEVEL UP! Tagad '+after.lvl+'. līmenis — '+rank(after.lvl));confetti()}
-  checkAch(after);render();
+  checkAch(after);render()}
+const setSt=(k,id,v)=>{S.done[k]=S.done[k]||{};if(v)S.done[k][id]=v;else delete S.done[k][id]};
+
+// 👨‍👩‍👦 vecāku aile: ieķeksē = apstiprināts, noņem = atpakaļ uz "gaida"
+function parentToggle(id,k){const t=T(id),d=fromKey(k);if(!t||d>today()||!needsApproval(t))return;
+  requireParent(()=>{const s=stOf(t,k);
+    if(s===true)apply([k],()=>setSt(k,id,'p'));
+    else{apply([k],()=>setSt(k,id,true));if(t.xp)floatXP('+'+t.xp+' XP')}})}
+// 🤫 klusais laiks: vecāki ieķeksē, ja NETIKA ievērots
+function quietToggle(k){requireParent(()=>{const i=S.pen.findIndex(p=>p.date===k&&p.reason==='quiet');
+  if(i>=0){S.pen.splice(i,1);toast('↩️ Klusā laika sods atcelts')}
+  else{S.pen.push({date:k,reason:'quiet',xp:-QUIET_XP});floatXP('−'+QUIET_XP+' XP',true);toast('🤫 Klusais laiks netika ievērots: −'+QUIET_XP+' XP','red')}
+  save();render()})}
+
+// 🧒 bērna aile (misijas kartīte) un 📅 mēneša tabula
+function toggle(id,k,btn,grid){
+  const t=T(id),d=fromKey(k),t0=today();if(!t||d>t0)return;
+  const s=stOf(t,k);
+  if(isParent()&&grid){touchParent();
+    apply([k],()=>setSt(k,id,s===true?null:true));
+    if(s!==true&&t.xp)floatXP('+'+t.xp+' XP');return}
+  if(isParent()&&+d===+t0&&s===true){touchParent();apply([k],()=>setSt(k,id,null));toast('↩️ Atzīme noņemta');return}
+  if(+d!==+t0){toast('🔒 Iepriekšējās dienas var labot tikai vecāki','red');shake(btn);return}
+  if(s===true){toast('✅ Jau apstiprināts — mainīt var tikai vecāki');return}
+  if(s==='p'){apply([k],()=>setSt(k,id,null));toast('↩️ Pieteikums atsaukts');return}
+  if(t.unlock&&!submitted(d)){toast('🔒 Vispirms atzīmē visas obligātās misijas!','red');shake(btn);return}
+  if(needsApproval(t)){apply([k],()=>setSt(k,id,'p'));toast('⏳ Nosūtīts vecākiem apstiprināšanai');return}
+  apply([k],()=>setSt(k,id,true));if(t.xp)floatXP('+'+t.xp+' XP');
 }
+function approve(k,id){if(!isParent())return;touchParent();const t=T(id);apply([k],()=>setSt(k,id,true));if(t&&t.xp)floatXP('+'+t.xp+' XP')}
+function reject(k,id){if(!isParent())return;touchParent();apply([k],()=>setSt(k,id,null));toast('✖ Noraidīts')}
+function approveAll(){if(!isParent())return;touchParent();const list=pendingList();if(!list.length)return;
+  const keys=[...new Set(list.map(p=>p.k))];apply(keys,()=>list.forEach(p=>setSt(p.k,p.id,true)));floatXP('+'+list.reduce((a,p)=>a+T(p.id).xp,0)+' XP')}
+function addPen(rid){if(!isParent())return;touchParent();const r=PENALTY_REASONS.find(x=>x.id===rid);if(!r)return;
+  const before=stats();S.pen.push({date:keyOf(today()),reason:rid,xp:-r.xp});save();
+  floatXP('−'+r.xp+' XP',true);toast(r.icon+' '+r.name+': −'+r.xp+' XP','red');
+  const after=stats();if(after.lvl<before.lvl)toast('⬇️ Līmenis samazinājās līdz '+after.lvl,'red');render()}
+function delPen(i){if(!isParent())return;touchParent();S.pen.splice(i,1);save();toast('↩️ Sods atcelts');render()}
 function buy(id){const r=REWARDS.find(x=>x.id===id),s=stats();if(!r||s.coins<r.cost)return;
   if(!confirm('Nopirkt "'+r.name+'" par '+r.cost+' 🪙?'))return;
   S.spent.push({id,cost:r.cost,date:keyOf(today())});save();toast('🛒 Nopirkts: '+r.icon+' '+r.name+' — parādi vecākiem!');checkAch(stats());render()}
@@ -224,64 +333,96 @@ function buy(id){const r=REWARDS.find(x=>x.id===id),s=stats();if(!r||s.coins<r.c
 let tab='today',view=new Date(today().getFullYear(),today().getMonth(),1);
 
 function renderHeader(s){const L=s.lvl,cur=need(L),nxt=need(L+1),p=Math.round((s.xp-cur)/(nxt-cur)*100);
+  document.getElementById('pbar').innerHTML=isParent()?`<div class="parentbar"><span>👨‍👩‍👦 Vecāku režīms</span><button class="btn" data-parent="1">🔒 Aizvērt</button></div>`:'';
   document.getElementById('hdr').innerHTML=`<div class="avatar">${S.avatar}</div>
   <div class="who"><div class="name">${esc(S.name)}</div><div class="rank">${rank(L)} · ${L}. līmenis</div>
   <div class="xpbar"><i style="width:${p}%"></i><span>${s.xp-cur} / ${nxt-cur} XP</span></div></div>
-  <div class="chips"><span class="chip" title="Ideālo dienu sērija">🔥 ${streak()}</span><span class="chip" title="Monētas">🪙 ${s.coins}</span></div>`}
+  <div class="chips"><span class="chip" title="Ideālo dienu sērija">🔥 ${streak()}</span><span class="chip" title="Monētas">🪙 ${s.coins}</span>
+  <button class="chip ${isParent()?'on':''}" data-parent="1" title="Vecāku režīms">${isParent()?'🔓':'🔒'}${s.pend?' ⏳'+s.pend:''}</button></div>`}
 
-function questCard(t,k,d){const done=isDone(t,k),locked=t.unlock&&!perfect(d)&&!done;
-  const sub=t.time&&t.time[d.getDay()]?'🕒 '+t.time[d.getDay()]:t.unlock?(locked?'🔒 Atbloķējas pēc obligātajām misijām':'🔓 Atbloķēts — izbaudi!'):t.bonus?(t.xp?'Bonusa misija':'Brīvprātīgi'):'Obligātā misija';
-  return`<button class="quest ${done?'done':''} ${locked?'locked':''}" data-toggle="${t.id}" data-k="${k}">
+function questCard(t,k,d){const s=stOf(t,k),done=s===true,pend=s==='p',locked=t.unlock&&!submitted(d)&&!s;
+  let sub=t.time&&t.time[d.getDay()]?'🕒 '+t.time[d.getDay()]:t.unlock?(locked?'🔒 Atbloķējas, kad atzīmētas obligātās misijas':'🔓 Atbloķēts — izbaudi!'):t.bonus?(t.xp?'Bonusa misija':'Brīvprātīgi'):'Obligātā misija';
+  if(pend)sub='⏳ Gaida vecāku apstiprinājumu';
+  const par=needsApproval(t)?`<button class="pbtn ${done?'on':''}" data-ptoggle="${t.id}" data-k="${k}" title="Vecāku apstiprinājums">✔</button>`:`<span class="pbtn none">—</span>`;
+  return`<div class="quest ${done?'done':''} ${pend?'pending':''} ${locked?'locked':''}" data-toggle="${t.id}" data-k="${k}" role="button">
   <span class="qicon">${t.icon}</span><span class="qbody"><b>${esc(t.name)}</b><small>${sub}</small></span>
-  <span class="qxp">${t.xp?'+'+t.xp+' XP':''}</span><span class="check">${locked?'🔒':'✔'}</span></button>`}
+  <span class="qxp">${t.xp?'+'+t.xp+' XP':''}</span>
+  <span class="checks"><span class="cbox"><span class="check me">${locked?'🔒':'✔'}</span>Es</span><span class="cbox">${par}Vecāki</span></span></div>`}
 
 function nextSport(){const sp=T('sports');if(!sp)return'';const d=today();for(let i=1;i<=7;i++){const x=new Date(d);x.setDate(d.getDate()+i);if(sched(sp,x))return`Nākamais treniņš: ${WD_LOC[x.getDay()]} ${sp.time&&sp.time[x.getDay()]||''}`}return''}
 
-function renderToday(){const d=today(),k=keyOf(d),req=reqFor(d),dn=req.filter(t=>isDone(t,k)).length,pct=req.length?Math.round(dn/req.length*100):0;
+function parentPanel(){const k0=keyOf(today()),list=pendingList().filter(p=>p.k!==k0);
+  const pens=S.pen.map((p,i)=>({...p,i})).filter(p=>p.date===k0&&p.reason!=='quiet');
+  const other=PENALTY_REASONS.filter(r=>r.id!=='quiet');
+  return`<div class="panel" style="border-color:var(--gold)"><div class="hint" style="margin:0 0 6px">Šodienas misijas apstiprini ailē <b style="color:var(--gold)">👨‍👩‍👦 Vecāki</b> zemāk.</div>
+  ${list.length?`<div class="row between" style="margin-top:12px"><div class="eyebrow" style="color:var(--gold)">Iepriekšējās dienas gaida (${list.length})</div>${list.length>1?'<button class="btn gold" data-appall="1">✔ Visus</button>':''}</div>
+  ${list.map(p=>{const t=T(p.id);return`<div class="pitem"><span class="qicon">${t.icon}</span><span class="qbody"><b>${esc(t.name)}</b><small>${fmtDate(p.k)} · +${t.xp} XP</small></span>
+  <button class="sq no" data-rej="${p.id}" data-k="${p.k}">✖</button><button class="sq ok" data-app="${p.id}" data-k="${p.k}">✔</button></div>`}).join('')}`:''}
+  ${other.length?`<div class="btns" style="margin-top:12px">${other.map(r=>`<button class="btn danger" data-pen="${r.id}">${r.icon} ${r.name} −${r.xp} XP</button>`).join('')}</div>`:''}
+  ${pens.map(p=>{const r=PENALTY_REASONS.find(x=>x.id===p.reason)||{icon:'⚠️',name:'Sods'};return`<div class="pitem"><span class="qbody pen">${r.icon} ${r.name} −${-p.xp} XP</span><button class="sq" data-delpen="${p.i}" title="Atcelt">↩️</button></div>`}).join('')}</div>`}
+
+function renderToday(){const d=today(),k=keyOf(d),req=reqFor(d),dn=req.filter(t=>isDone(t,k)).length,pn=req.filter(t=>isPend(t,k)).length,pct=req.length?Math.round(dn/req.length*100):0;
   const bonus=TASKS.filter(t=>!isReq(t)&&sched(t,d));
-  let h=`<div class="panel"><div class="row between"><div><div class="eyebrow">Šodienas misijas</div><h2>${cap(WD_LONG[d.getDay()])}, ${d.getDate()}. ${MONTHS[d.getMonth()]}</h2></div><div class="big">${dn}/${req.length}</div></div>
+  const pens=S.pen.filter(p=>p.date===k);
+  let h=isParent()?parentPanel():'';
+  h+=`<div class="panel"><div class="row between"><div><div class="eyebrow">Šodienas misijas</div><h2>${cap(WD_LONG[d.getDay()])}, ${d.getDate()}. ${MONTHS[d.getMonth()]}</h2></div><div class="big">${dn}/${req.length}</div></div>
   <div class="bar"><i style="width:${pct}%"></i></div>
-  ${perfect(d)?`<div class="banner">💎 Ideāla diena! +${PERFECT_BONUS} XP bonuss saņemts</div>`:`<div class="hint">Izpildi visas obligātās misijas → +${PERFECT_BONUS} XP bonuss un 🎮 brīvais laiks atbloķējas</div>`}
-  ${sched(T('sports')||{days:[]},d)?'':`<div class="hint">⚽ ${nextSport()}</div>`}</div>
+  ${pn?`<div class="hint">⏳ ${pn} gaida vecāku apstiprinājumu</div>`:''}
+  ${d.getDay()===LEARN_DAY?'<div class="banner learn">📖 Šodien ir mācīšanās diena!</div>':''}
+  ${perfect(d)?`<div class="banner">💎 Ideāla diena! +${PERFECT_BONUS} XP bonuss saņemts</div>`:`<div class="hint">Visas obligātās misijas apstiprinātas → +${PERFECT_BONUS} XP bonuss. 🎮 Brīvais laiks atbloķējas, kad tās visas atzīmētas.</div>`}
+  ${sched(T('sports')||{days:[]},d)?'':`<div class="hint">⚽ ${nextSport()}</div>`}
+  ${pens.length?pens.map(p=>{const r=PENALTY_REASONS.find(x=>x.id===p.reason)||{icon:'⚠️',name:'Sods'};return`<div class="pen">${r.icon} ${r.name}: −${-p.xp} XP</div>`}).join(''):''}</div>
   <h3>⚔️ Obligātās misijas</h3>${req.map(t=>questCard(t,k,d)).join('')}
-  ${bonus.length?`<h3>✨ Bonusa misijas</h3>${bonus.map(t=>questCard(t,k,d)).join('')}`:''}`;
+  ${bonus.length?`<h3>✨ Bonusa misijas</h3>${bonus.map(t=>questCard(t,k,d)).join('')}`:''}
+  <h3>🌙 Vakarā</h3>${(()=>{const bad=S.pen.some(p=>p.date===k&&p.reason==='quiet');
+  return`<div class="info ${bad?'bad':quietNow()?'now':''}"><span class="qicon">🤫</span><span class="qbody"><b>Klusais laiks ${QUIET.from}–${QUIET.to}</b>
+  <small>${bad?'Netika ievērots: −'+QUIET_XP+' XP':quietNow()?'Tagad ir klusais laiks!':'Ja netiek ievērots, vecāki atņem '+QUIET_XP+' XP'}</small></span>
+  <span class="cbox"><button class="pbtn red ${bad?'on':''}" data-quiet="${k}" title="Vecāki ieķeksē, ja netika ievērots">✖</button>Netika</span></div>`})()}`;
   return h}
 
-function renderMonth(){const y=view.getFullYear(),m=view.getMonth(),n=new Date(y,m+1,0).getDate(),t0=today();
+function renderMonth(){const y=view.getFullYear(),m=view.getMonth(),n=new Date(y,m+1,0).getDate(),t0=today(),par=isParent();
   const days=Array.from({length:n},(_,i)=>new Date(y,m,i+1));
   let h=`<div class="mnav"><button data-mon="-1">◀</button><h2>${cap(MONTHS[m])} ${y}</h2><button data-mon="1">▶</button></div>
-  <div class="gridwrap"><table class="grid"><thead><tr><th class="sticky">Misija</th>${days.map(d=>`<th class="${d.getDay()%6===0?'we':''} ${+d===+t0?'tod':''}">${WD[d.getDay()]}<br>${d.getDate()}</th>`).join('')}</tr></thead><tbody>`;
-  TASKS.forEach(t=>{h+=`<tr><td class="sticky">${t.icon} ${esc(t.name)}</td>`+days.map(d=>{if(!sched(t,d))return'<td class="na"></td>';const k=keyOf(d),on=isDone(t,k),fut=d>t0;
-    return`<td><button class="cell ${on?'on':''} ${!on&&!fut&&+d!==+t0&&isReq(t)?'miss':''}" data-toggle="${t.id}" data-k="${k}" ${fut?'disabled':''}>${on?'✔':''}</button></td>`}).join('')+'</tr>'});
+  <div class="gridwrap"><table class="grid"><thead><tr><th class="sticky">Misija</th>${days.map(d=>`<th class="${d.getDay()===LEARN_DAY?'learn':d.getDay()===0?'we':''} ${+d===+t0?'tod':''}" ${d.getDay()===LEARN_DAY?'title="Mācīšanās diena"':''}>${d.getDay()===LEARN_DAY?'📖':WD[d.getDay()]}<br>${d.getDate()}</th>`).join('')}</tr></thead><tbody>`;
+  TASKS.forEach(t=>{h+=`<tr><td class="sticky">${t.icon} ${esc(t.name)}</td>`+days.map(d=>{if(!sched(t,d))return'<td class="na"></td>';const k=keyOf(d),s=stOf(t,k),fut=d>t0,lock=fut||(!par&&+d!==+t0);
+    return`<td><button class="cell ${s===true?'on':''} ${s==='p'?'pend':''} ${!s&&!fut&&+d!==+t0&&isReq(t)?'miss':''}" data-gtoggle="${t.id}" data-k="${k}" ${lock?'disabled':''}>${s===true?'✔':s==='p'?'⏳':''}</button></td>`}).join('')+'</tr>'});
+  h+=`<tr><td class="sticky" style="color:var(--red);font-size:12px">⚠️ Sodi</td>`+days.map(d=>{const c=S.pen.filter(p=>p.date===keyOf(d)).reduce((a,p)=>a-p.xp,0);return`<td class="pct" style="color:var(--red)">${c?'−'+c:''}</td>`}).join('')+'</tr>';
   h+=`<tr><td class="sticky" style="color:var(--muted);font-size:11px">Dienas %</td>`+days.map(d=>{if(d>t0)return'<td></td>';const r=reqFor(d),k=keyOf(d),p=r.length?Math.round(r.filter(t=>isDone(t,k)).length/r.length*100):0;return`<td class="pct" style="color:${p===100?'var(--green)':'var(--muted)'}">${p}</td>`}).join('')+'</tr></tbody></table></div>';
-  // statistika
-  let goalAll=0,goalSoFar=0,doneAll=0;const rows=TASKS.map(t=>{const g=days.filter(d=>sched(t,d)),gs=g.filter(d=>d<=t0),a=g.filter(d=>isDone(t,keyOf(d))).length;
+  h+=`<div class="hint">📖 Sestdiena — mācīšanās diena · ⏳ gaida apstiprinājumu · ${par?'Vecāku režīmā vari labot jebkuru pagājušo dienu.':'Iepriekšējās dienas var labot tikai vecāki.'}</div>`;
+  // statistika (skaitās tikai apstiprinātās misijas)
+  let goalAll=0,goalSoFar=0,doneAll=0;const rows=TASKS.filter(t=>t.xp).map(t=>{const g=days.filter(d=>sched(t,d)),gs=g.filter(d=>d<=t0),a=g.filter(d=>isDone(t,keyOf(d))).length;
     goalAll+=g.length;goalSoFar+=gs.length;doneAll+=a;const p=gs.length?Math.round(a/gs.length*100):0;
     return`<div class="trow"><span>${t.icon} ${esc(t.name)}</span><span class="n">${a}/${g.length}</span><div class="bar"><i style="width:${p}%"></i></div><span class="p">${p}%</span></div>`}).join('');
   const op=goalSoFar?Math.round(doneAll/goalSoFar*100):0;
+  const mPens=S.pen.filter(p=>{const d=fromKey(p.date);return d.getFullYear()===y&&d.getMonth()===m});
   const weeks=[];days.forEach((d,i)=>{if(i===0||d.getDay()===1)weeks.push([]);weeks[weeks.length-1].push(d)});
   const wk=weeks.map((w,i)=>{let g=0,a=0;w.filter(d=>d<=t0).forEach(d=>{const r=reqFor(d);g+=r.length;a+=r.filter(t=>isDone(t,keyOf(d))).length});const p=g?Math.round(a/g*100):0;return`<div class="wk"><b style="color:var(--text)">${g?p+'%':''}</b><i style="height:${p}%"></i>${i+1}. ned.</div>`}).join('');
   h+=`<div class="stats"><div class="panel"><div class="eyebrow">Kopējā statistika</div><div class="donut" style="--p:${op}"><span>${op}%</span></div>
-  <div class="kpis"><div class="kpi"><b>${goalAll}</b><small>Mērķis</small></div><div class="kpi"><b style="color:var(--green)">${doneAll}</b><small>Izpildīts</small></div><div class="kpi"><b style="color:var(--pink)">${goalAll-doneAll}</b><small>Atlicis</small></div></div></div>
+  <div class="kpis"><div class="kpi"><b>${goalAll}</b><small>Mērķis</small></div><div class="kpi"><b style="color:var(--green)">${doneAll}</b><small>Izpildīts</small></div><div class="kpi"><b style="color:var(--pink)">${goalAll-doneAll}</b><small>Atlicis</small></div></div>
+  ${mPens.length?`<div class="pen" style="text-align:center">⚠️ Sodi šomēnes: ${mPens.length} (−${mPens.reduce((a,p)=>a-p.xp,0)} XP)</div>`:''}</div>
   <div class="panel"><div class="eyebrow">Nedēļu progress</div><div class="weeks">${wk}</div></div></div>
-  <div class="panel"><div class="eyebrow">Misiju analīze</div>${rows}</div>
-  <div class="hint">Aizmirsi atzīmēt? Pagājušās dienas var atzīmēt šeit tabulā.</div>`;
+  <div class="panel"><div class="eyebrow">Misiju analīze</div>${rows}</div>`;
   return h}
 
 function renderAch(s){return`<div class="panel"><div class="kpis"><div class="kpi"><b>${s.xp}</b><small>XP kopā</small></div><div class="kpi"><b>${s.perfect}</b><small>Ideālas dienas</small></div><div class="kpi"><b>${s.best}</b><small>Labākā sērija</small></div></div></div>
   <h3>🏆 Trofejas ${S.ach.length}/${ACH.length}</h3><div class="ach">${ACH.map(a=>`<div class="badge ${S.ach.includes(a.id)?'got':''}"><div class="e">${a.icon}</div><b>${a.name}</b><small>${a.desc}</small></div>`).join('')}</div>
-  <h3>📊 Misijas izpildītas</h3><div class="panel">${TASKS.map(t=>`<div class="trow" style="grid-template-columns:1fr auto"><span>${t.icon} ${esc(t.name)}</span><span class="p">${s.c[t.id]}×</span></div>`).join('')}</div>`}
+  <h3>📊 Misijas izpildītas</h3><div class="panel">${TASKS.map(t=>`<div class="trow" style="grid-template-columns:1fr auto"><span>${t.icon} ${esc(t.name)}</span><span class="p">${s.c[t.id]}×</span></div>`).join('')}
+  <div class="trow" style="grid-template-columns:1fr auto"><span class="pen" style="margin:0">⚠️ Sodi</span><span class="p" style="color:var(--red)">${S.pen.length}×</span></div></div>`}
 
 function renderShop(s){return`<div class="panel row between"><div><div class="eyebrow">Tavs maciņš</div><h2>🪙 ${s.coins} monētas</h2></div></div>
-  <div class="hint" style="margin:-4px 0 14px">Katrs nopelnītais XP = 1 monēta. Iztērē tās balvām!</div>
+  <div class="hint" style="margin:-4px 0 14px">Katrs nopelnītais XP = 1 monēta. Sodi monētas atņem. Iztērē tās balvām!</div>
   ${REWARDS.map(r=>`<div class="reward"><span class="qicon">${r.icon}</span><span class="qbody"><b>${esc(r.name)}</b><small>${r.cost} 🪙</small></span><button class="btn primary" data-buy="${r.id}" ${s.coins<r.cost?'disabled':''}>Pirkt</button></div>`).join('')}
   ${S.spent.length?`<h3>🧾 Pirkumu vēsture</h3><div class="panel hist">${S.spent.slice().reverse().slice(0,15).map(p=>{const r=REWARDS.find(x=>x.id===p.id);return`${p.date} — ${r?r.icon+' '+esc(r.name):p.id} (−${p.cost} 🪙)`}).join('<br>')}</div>`:''}`}
 
-function renderSet(){return`<div class="panel"><div class="eyebrow">Spēlētājs</div>
+function renderSet(){const par=isParent();return`<div class="panel"><div class="eyebrow">Spēlētājs</div>
   <label>Vārds</label><input type="text" id="nm" maxlength="24" value="${esc(S.name)}">
   <label>Avatars</label><div class="avs">${AVATARS.map(a=>`<button data-av="${a}" class="${a===S.avatar?'sel':''}">${a}</button>`).join('')}</div></div>
+  <div class="panel"><div class="eyebrow" style="color:var(--gold)">👨‍👩‍👦 Vecākiem</div>
+  ${par?`<div class="hint">Vecāku režīms ir atvērts (aizveras pēc ${PARENT_MINUTES} min neaktivitātes).</div><div class="btns"><button class="btn" id="chpin">🔑 Mainīt PIN</button><button class="btn" data-parent="1">🔒 Aizvērt</button></div>`
+       :`<div class="hint">${S.pinHash?'Misiju apstiprināšana, sodi un vēstures labošana pieejama vecāku režīmā.':'Iestati PIN, lai varētu apstiprināt misijas un dot sodus.'}</div><div class="btns"><button class="btn gold" data-parent="1">${S.pinHash?'🔓 Atvērt vecāku režīmu':'🔐 Iestatīt PIN'}</button></div>`}</div>
   <div class="panel"><div class="eyebrow">Dati</div><div class="hint">Progress glabājas šajā pārlūkā. Saglabā rezerves kopiju, ja maini ierīci.</div>
-  <div class="btns"><button class="btn" id="exp">⬇️ Eksportēt</button><button class="btn" id="imp">⬆️ Importēt</button><button class="btn danger" id="rst">🗑️ Sākt no jauna</button></div>
+  <div class="btns"><button class="btn" id="exp">⬇️ Eksportēt</button>${par?'<button class="btn" id="imp">⬆️ Importēt</button><button class="btn danger" id="rst">🗑️ Sākt no jauna</button>':''}</div>
+  ${par?'':'<div class="hint">Importēt un dzēst var tikai vecāku režīmā.</div>'}
   <input type="file" id="file" accept="application/json" hidden></div>`}
 
 function render(){const s=stats();renderHeader(s);const main=document.getElementById('main');
@@ -289,20 +430,38 @@ function render(){const s=stats();renderHeader(s);const main=document.getElement
   document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab))}
 
 /* ---------- notikumi ---------- */
-document.addEventListener('click',e=>{const el=e.target.closest('[data-toggle],[data-tab],[data-mon],[data-buy],[data-av],#exp,#imp,#rst');if(!el)return;
-  if(el.dataset.toggle)toggle(el.dataset.toggle,el.dataset.k,el);
-  else if(el.dataset.tab){tab=el.dataset.tab;render();scrollTo(0,0)}
-  else if(el.dataset.mon){view=new Date(view.getFullYear(),view.getMonth()+ +el.dataset.mon,1);render()}
-  else if(el.dataset.buy)buy(el.dataset.buy);
-  else if(el.dataset.av){S.avatar=el.dataset.av;save();render()}
+document.addEventListener('click',e=>{
+  if(e.target.dataset&&e.target.dataset.close){closeModal();return}
+  const el=e.target.closest('[data-ptoggle],[data-quiet],[data-gtoggle],[data-toggle],[data-tab],[data-mon],[data-buy],[data-av],[data-parent],[data-app],[data-rej],[data-appall],[data-pen],[data-delpen],#pinok,#chpin,#exp,#imp,#rst');if(!el)return;
+  const ds=el.dataset;
+  if(el.id==='pinok')submitPin(ds.mode);
+  else if(ds.ptoggle)parentToggle(ds.ptoggle,ds.k);
+  else if(ds.quiet)quietToggle(ds.quiet);
+  else if(ds.gtoggle)toggle(ds.gtoggle,ds.k,el,true);
+  else if(ds.toggle)toggle(ds.toggle,ds.k,el);
+  else if(ds.app)approve(ds.k,ds.app);
+  else if(ds.rej)reject(ds.k,ds.rej);
+  else if(ds.appall)approveAll();
+  else if(ds.pen)addPen(ds.pen);
+  else if(ds.delpen!==undefined)delPen(+ds.delpen);
+  else if(ds.parent)parentButton();
+  else if(ds.tab){tab=ds.tab;render();scrollTo(0,0)}
+  else if(ds.mon){view=new Date(view.getFullYear(),view.getMonth()+ +ds.mon,1);render()}
+  else if(ds.buy)buy(ds.buy);
+  else if(ds.av){S.avatar=ds.av;save();render()}
+  else if(el.id==='chpin'&&isParent())pinModal('set');
   else if(el.id==='exp'){const b=new Blob([JSON.stringify(S,null,1)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='questlog-'+keyOf(today())+'.json';a.click()}
-  else if(el.id==='imp')document.getElementById('file').click();
-  else if(el.id==='rst'){if(confirm('Tiešām dzēst visu progresu?')){S={name:S.name,avatar:S.avatar,done:{},spent:[],ach:[]};save();render()}}});
+  else if(el.id==='imp'&&isParent())document.getElementById('file').click();
+  else if(el.id==='rst'&&isParent()){if(confirm('Tiešām dzēst visu progresu? PIN paliks.')){S=Object.assign(BLANK(),{name:S.name,avatar:S.avatar,pinHash:S.pinHash});save();render()}}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='pin'){const b=document.getElementById('pinok');if(b)submitPin(b.dataset.mode)}});
 document.addEventListener('change',e=>{
   if(e.target.id==='nm'){S.name=e.target.value.trim()||'Spēlētājs';save();render()}
-  if(e.target.id==='file'){const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.done)throw 0;S=Object.assign({name:'Spēlētājs',avatar:'🦸',done:{},spent:[],ach:[]},d);save();render();toast('✅ Dati ielādēti')}catch(x){toast('❌ Nederīgs fails','red')}})}});
-// jauna diena pusnaktī
-let lastDay=keyOf(today());setInterval(()=>{if(keyOf(today())!==lastDay){lastDay=keyOf(today());render()}},60000);
+  if(e.target.id==='file'&&isParent()){const f=e.target.files[0];if(!f)return;f.text().then(t=>{try{const d=JSON.parse(t);if(!d.done)throw 0;S=Object.assign(BLANK(),d);save();render();toast('✅ Dati ielādēti')}catch(x){toast('❌ Nederīgs fails','red')}})}});
+// jauna diena pusnaktī, klusā laika un vecāku režīma pārbaude
+let lastDay=keyOf(today()),lastQuiet=quietNow(),wasParent=false;
+setInterval(()=>{const q=quietNow(),p=isParent();
+  if(keyOf(today())!==lastDay||q!==lastQuiet||(wasParent&&!p)){if(wasParent&&!p)toast('🔒 Vecāku režīms aizvērts');lastDay=keyOf(today());lastQuiet=q;render()}
+  wasParent=p},20000);
 render();
 </script>
 </body>
